@@ -139,11 +139,12 @@ class EditSetting extends Page
         }else{
             NotifySetting::create($data);
         }
-        
-        Setting::first()->update([
-            'min_withdraw_worker' => $data['min_withdraw_worker'],
-            'percent_profit_worker' => $data['percent_profit_worker'],
-        ]);
+        if(auth()->user()->is_admin){
+            Setting::first()->update([
+                'min_withdraw_worker' => $data['min_withdraw_worker'],
+                'percent_profit_worker' => $data['percent_profit_worker'],
+            ]);
+        }
         
         Notification::make()
             ->title('Настройки сохранены')
