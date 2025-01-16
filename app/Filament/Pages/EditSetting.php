@@ -9,7 +9,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Grid;
 use App\Models\NotifySetting;
-use App\Models\Setting;
+use App\Models\SettingsWorker;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Actions\Action;
 use Filament\Forms\Get; 
@@ -37,9 +37,9 @@ class EditSetting extends Page
             'notify_activate_promo' => auth()->user()->notify_settings->notify_activate_promo ?? false,
             'notify_new_payment' => auth()->user()->notify_settings->notify_new_payment ?? false,
             'notify_new_order' => auth()->user()->notify_settings->notify_new_order ?? false,
-
-            'min_withdraw_worker' => Setting::first()->min_withdraw_worker ?? 100,
-            'percent_profit_worker' => Setting::first()->percent_profit_worker ?? 75,
+            'bot_token' => auth()->user()->notify_settings->bot_token ?? null,
+            'min_withdraw_worker' => SettingsWorker::first()->min_withdraw_worker ?? 100,
+            'percent_profit_worker' => SettingsWorker::first()->percent_profit_worker ?? 75,
         ]);
     }
 
@@ -90,10 +90,10 @@ class EditSetting extends Page
                     ->schema([
                         TextInput::make('min_withdraw_worker')
                             ->label('Минимальная сумма вывода')
-                            ->default(Setting::first()->min_withdraw_worker ?? 100),
+                            ->default(SettingsWorker::first()->min_withdraw_worker ?? 100),
                             TextInput::make('percent_profit_worker')
                             ->label('Процент прибыли')
-                            ->default(Setting::first()->percent_profit_worker ?? 75),
+                            ->default(SettingsWorker::first()->percent_profit_worker ?? 75),
                     ])->visible(fn (Get $get): bool => auth()->user()->is_admin),
                     
                 // Section::make('SEO настройки')
@@ -139,11 +139,19 @@ class EditSetting extends Page
         }else{
             NotifySetting::create($data);
         }
-        if(auth()->user()->is_admin){
-            Setting::first()->update([
-                'min_withdraw_worker' => $data['min_withdraw_worker'],
-                'percent_profit_worker' => $data['percent_profit_worker'],
-            ]);
+        if(auth()->user()->is_admin ){
+            $settings = SettingsWorker::first();
+            if($settings){
+                 $settings->update([
+                    'min_withdraw_worker' => $data['min_withdraw_worker'],
+                    'percent_profit_worker' => $data['percent_profit_worker'],
+                ]);
+            }else{
+                SettingsWorker::create([
+                    'min_withdraw_worker' => $data['min_withdraw_worker'],
+                    'percent_profit_worker' => $data['percent_profit_worker'],
+                ]);
+            }
         }
         
         Notification::make()

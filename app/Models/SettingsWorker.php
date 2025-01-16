@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Setting extends Model
+class SettingsWorker extends Model
 {
     use HasFactory;
 
@@ -13,6 +13,6 @@ class Setting extends Model
         'win_chance',
         'minimal_deposit',
         'min_withdraw_worker',
-        'percent_profit_workera',
+        'percent_profit_worker',
     ];
 }
