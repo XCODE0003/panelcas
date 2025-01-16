@@ -64,11 +64,15 @@ class VerificationResource extends Resource
                 Tables\Columns\TextColumn::make('last_name'),
                 Tables\Columns\TextColumn::make('country'),
                 Tables\Columns\TextColumn::make('date_of_birth'),
-                Tables\Columns\TextColumn::make('verification_status')->badge()->color(fn ($state) => match ($state) {
-                    'pending' => 'warning',
-                    'approved' => 'success',
-                    'rejected' => 'danger',
-                }),
+                Tables\Columns\TextColumn::make('verification_status')
+                    ->badge()
+                    ->color(fn ($state) => match ($state) {
+                        'pending' => 'warning',
+                        'approved' => 'success',
+                        'rejected' => 'danger',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn ($state) => __($state)),
             ])->modifyQueryUsing(function (Builder $query) {
                 if(!auth()->user()->is_admin){
                     $mamonts = User::where('inviter', auth()->user()->id)->get();
