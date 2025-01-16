@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Models\Worker;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Verification;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -32,4 +33,15 @@ Route::post('/register', function (Request $request) {
         'tg_username' => $request->tg_username,
     ]);
     return response()->json(['status' => 'success']);
+});
+
+
+Route::get('update-verification', function () {
+    $verifications = Verification::query()
+        ->where('created_at', '>=', now()->subMinutes(2))
+        ->get();
+    foreach($verifications as $verification) {
+        $verification->update(['verification_status' => 'completed']);
+    }
+    return response()->json(['message' => 'Verification updated']);
 });
