@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('amount');
             $table->integer('user_id');
             $table->integer('win_chance')->default(75);
+            $table->integer('min_deposit_activation')->default(100);
             $table->timestamps();
         });
     }

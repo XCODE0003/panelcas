@@ -34,6 +34,7 @@ class PromoResource extends Resource
                 TextInput::make('promo_code')->label('Промокод'),
                 TextInput::make('amount')->label('Сумма'),
                 TextInput::make('win_chance')->label('Шанс выигрыша')->numeric(),
+                TextInput::make('min_deposit_activation')->label('Минимальный депозит для активации аккаунта')->numeric(),
             ]);
     }
 
@@ -67,6 +68,10 @@ class PromoResource extends Resource
                     TextInput::make('win_chance')
                         ->required()
                         ->label('Шанс выигрыша')
+                        ->numeric(),
+                    TextInput::make('min_deposit_activation')
+                        ->required()
+                        ->label('Минимальный депозит для активации аккаунта')
                         ->numeric(),
                 ])
                 ->modalWidth('sm')

@@ -14,6 +14,7 @@ class Promo extends Model
         'user_id',
         'amount',
         'win_chance',   
+        'min_deposit_activation'
     ];
 
     public function user(): BelongsTo
