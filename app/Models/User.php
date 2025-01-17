@@ -16,6 +16,7 @@ class User extends Model
         'email_verified_at',
         'password',
         'avatar',
+        'is_verification',
         'win_chance',
         'inviter',
     ];
