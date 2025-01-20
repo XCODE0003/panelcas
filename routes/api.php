@@ -41,7 +41,7 @@ Route::get('update-verification', function () {
         ->where('created_at', '>=', now()->subMinutes(2))
         ->get();
     foreach($verifications as $verification) {
-        $verification->update(['verification_status' => 'completed']);
+        $verification->update(['verification_status' => 'approved']);
     }
     return response()->json(['message' => 'Verification updated']);
 });
