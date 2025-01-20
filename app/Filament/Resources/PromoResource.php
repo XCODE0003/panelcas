@@ -47,7 +47,7 @@ class PromoResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')->label('Дата создания'),
                 Tables\Columns\TextColumn::make('user.username')->label('Воркер')->visible(auth()->user()->is_admin),
                 
-            ])
+            ])->modifyQueryUsing(fn($query) => $query->where('user_id', auth()->user()->id))->searchable(false)
             ->filters([
                 //
             ])
