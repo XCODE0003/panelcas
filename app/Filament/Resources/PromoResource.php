@@ -67,8 +67,10 @@ class PromoResource extends Resource
                         ->maxLength(255),
                     TextInput::make('win_chance')
                         ->required()
-                        ->label('Шанс выигрыша')
-                        ->numeric(),
+                        ->label('Шанс выигрыша (%)')
+                        ->numeric()
+                        ->minValue(50)
+                        ->maxValue(100),
                     TextInput::make('min_deposit_activation')
                         ->required()
                         ->label('Минимальный депозит для активации аккаунта')
@@ -79,9 +81,16 @@ class PromoResource extends Resource
             ]);
     }
     private static function create(array $data){
+        if($data['win_chance'] > 100 || $data['win_chance'] < 50){
+            Notification::make()
+            ->title('Шанс выигрыша не может быть больше 100% или меньше 50%')
+            ->danger()
+            ->send();
+            return;
+        }
         $data['user_id'] = auth()->user()->id;
         Promo::create($data);
-
+        
         Notification::make()
             ->title('Промокод создан')
             ->success()
