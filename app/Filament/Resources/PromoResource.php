@@ -73,7 +73,7 @@ class PromoResource extends Resource
                         ->maxValue(100),
                     TextInput::make('min_deposit_activation')
                         ->required()
-                        ->label('Минимальный депозит для активации аккаунта')
+                        ->label('Минимальный депозит для активации аккаунта. Минимальный депозит 50$')
                         ->numeric(),
                 ])
                 ->modalWidth('sm')
